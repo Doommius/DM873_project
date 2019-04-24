@@ -1,0 +1,24 @@
+1 Papilionidae
+2 Parnassiinae
+3 Coliadinae
+4 Pierinae
+5 Dismorphiinae
+6 Danainae
+7 Satyrinae
+8 Apaturinae
+9 Biblidinae
+10 Limenitinae
+11 Cyrestinae
+12 Calinaginae
+13 Heliconiinae袖蝶亚科
+14 Charaxinae螯蛱蝶亚科
+15 Nymphalinae蛱蝶亚科 
+16 Libytheinae喙蝶亚科
+17 Riodininae蚬碟亚科
+18 Miletinae云灰蝶亚科
+19 Curetinae银灰蝶亚科
+20 Lycaeninae灰蝶亚科
+21 Hesperiinae弄蝶亚科
+22 Pyrginae花弄蝶亚科
+23 Coeliadinae竖翅弄蝶亚科
+  
