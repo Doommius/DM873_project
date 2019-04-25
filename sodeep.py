@@ -11,7 +11,7 @@ import pandas as pd
 #  Parse the CSV file with all the information add the pictures to a array or data structure and fetch them from there?
 #
 #
-class datafetcher():
+class DataFetcher():
     __data_set = ""
 
     def __init__(self, folder):
@@ -19,20 +19,20 @@ class datafetcher():
         # load data into type
         self.__data_set = pd.read_csv("dataset/butterflies.txt", sep='\t')
 
-    def get_family(family):
-        return dataframe[self.__data_set['family'] == family]
+    def get_family(self, family):
+        return pd.DataFrame([family == 3])
 
-    def get_subfamily(subfamily):
-        return dataframe[self.__data_set['subfamily'] == subfamily]
+    def get_subfamily(self, subfamily):
+        return pd.DataFrame[self.__data_set[1] == subfamily]
 
-    def get_speices(species):
-        return dataframe[self.__data_set['species'] == species]
+    def get_speices(self, species):
+        return pd.DataFrame[self.__data_set[2] == species]
 
-    def get_genus(genus):
-        return dataframe[self.__data_set['genus'] == genus]
+    def get_genus(self, genus):
+        return pd.DataFrame[self.__data_set[3] == genus]
 
 
-class MyModel(keras.model):
+class MyModel(models.Model):
     def __init__(self):
         super(MyModel, self).__init___()
         self.dense1 = layers.Dense(20, actication='relu')
@@ -40,9 +40,8 @@ class MyModel(keras.model):
         self.dense3 = layers.Dense(10, actication='softmax')
 
     def call(self, dataframe):
-
         train_dataframe = dataframe.sample(frac=0.8, random_state=200)
-        validation_dataframe = dataframe.drop(train.index)
+        validation_dataframe = pd.DataFrame.drop(train_dataframe.index)
 
         train_datagen = ImageDataGenerator(
             rescale=1. / 255,
@@ -64,12 +63,13 @@ class MyModel(keras.model):
             validation_steps=800)
 
 
-        x = self.dense1(inputs)
+        x = self.dense1(input)
         x = self.dense2(x)
         x = self.dense3(x)
         return x
 
 
+
 model = MyModel
-model.call(datafetcher.get_family(2))
+model.call(DataFetcher.get_family(DataFetcher, 2), model)
 model.fit()
