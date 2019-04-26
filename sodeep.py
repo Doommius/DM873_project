@@ -1,7 +1,7 @@
 from keras import models
 from keras import layers
+from keras import preprocessing as pr
 from keras import optimizers
-
 import pandas as pd
 
 
@@ -40,16 +40,16 @@ class MyModel(models.Model):
         self.dense3 = layers.Dense(10, actication='softmax')
 
     def call(self, dataframe):
-        train_dataframe = dataframe.sample(frac=0.8, random_state=200)
+        train_dataframe = pd.DataFrame.sample(self, frac=0.8, random_state=200)
         validation_dataframe = pd.DataFrame.drop(train_dataframe.index)
 
-        train_datagen = ImageDataGenerator(
+        train_datagen = pr.image.ImageDataGenerator(
             rescale=1. / 255,
             shear_range=0.2,
             zoom_range=0.2,
             horizontal_flip=True)
 
-        test_datagen = ImageDataGenerator(rescale=1. / 255)
+        test_datagen = pr.image.ImageDataGenerator(rescale=1. / 255)
 
         train_generator = train_datagen.flow_from_dataframe(train_dataframe)
 
