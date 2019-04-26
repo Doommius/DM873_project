@@ -4,14 +4,12 @@ from keras import preprocessing as pr
 from keras import optimizers
 import pandas as pd
 
-
 #
 #
 #  Idea 1,
 #  Parse the CSV file with all the information add the pictures to a array or data structure and fetch them from there?
 #
 #
-
 
 def get_subfamily(datagrame, subfamily):
     return dataframe(['subfamily' == 3])
@@ -27,14 +25,14 @@ def get_genus(datagrame, genus):
 
 class MyModel(models.Model):
     def __init__(self):
-        super(MyModel, self).__init___()
+        super(MyModel, self).__init__()
         self.dense1 = layers.Dense(20, actication='relu')
         self.dense2 = layers.Dense(20, actication='relu')
         self.dense3 = layers.Dense(10, actication='softmax')
 
     def call(self, dataframe):
-        train_dataframe = pd.DataFrame.sample(self, frac=0.8, random_state=200)
-        validation_dataframe = pd.DataFrame.drop(train_dataframe.index)
+        train_dataframe = pd.DataFrame.sample(dataframe, frac=0.8)
+        validation_dataframe = pd.DataFrame.drop(dataframe, train_dataframe.index)
 
         train_datagen = pr.image.ImageDataGenerator(
             rescale=1. / 255,
@@ -62,6 +60,8 @@ class MyModel(models.Model):
 
 
 dataframe = pd.read_csv("dataset/butterflies.txt", sep='\t')
+dataframe['file'] = "dataset/base_set/" + dataframe['file'].astype(str)
+print(dataframe)
 model = MyModel
-model.call(dataframe(['family' == 3]), MyModel)
+model.call(model, dataframe[dataframe.family == 3])
 model.fit()
