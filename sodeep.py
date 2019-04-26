@@ -11,25 +11,18 @@ import pandas as pd
 #  Parse the CSV file with all the information add the pictures to a array or data structure and fetch them from there?
 #
 #
-class DataFetcher():
-    __data_set = ""
 
-    def __init__(self, folder):
-        self.folder = folder
-        # load data into type
-        self.__data_set = pd.read_csv("dataset/butterflies.txt", sep='\t')
 
-    def get_family(self, family):
-        return pd.DataFrame([family == 3])
+def get_subfamily(datagrame, subfamily):
+    return dataframe(['subfamily' == 3])
 
-    def get_subfamily(self, subfamily):
-        return pd.DataFrame[self.__data_set[1] == subfamily]
 
-    def get_species(self, species):
-        return pd.DataFrame[self.__data_set[2] == species]
+def get_species(datagrame, species):
+    return dataframe(['species' == 3])
 
-    def get_genus(self, genus):
-        return pd.DataFrame[self.__data_set[3] == genus]
+
+def get_genus(datagrame, genus):
+    return dataframe(['genus' == 3])
 
 
 class MyModel(models.Model):
@@ -68,6 +61,7 @@ class MyModel(models.Model):
         return x
 
 
+dataframe = pd.read_csv("dataset/butterflies.txt", sep='\t')
 model = MyModel
-model.call(DataFetcher.get_family(DataFetcher, 2), MyModel)
+model.call(dataframe(['family' == 3]), MyModel)
 model.fit()
