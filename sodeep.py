@@ -25,7 +25,7 @@ class DataFetcher():
     def get_subfamily(self, subfamily):
         return pd.DataFrame[self.__data_set[1] == subfamily]
 
-    def get_speices(self, species):
+    def get_species(self, species):
         return pd.DataFrame[self.__data_set[2] == species]
 
     def get_genus(self, genus):
@@ -62,14 +62,12 @@ class MyModel(models.Model):
             validation_data=validation_generator,
             validation_steps=800)
 
-
         x = self.dense1(input)
         x = self.dense2(x)
         x = self.dense3(x)
         return x
 
 
-
 model = MyModel
-model.call(DataFetcher.get_family(DataFetcher, 2), model)
+model.call(DataFetcher.get_family(DataFetcher, 2), MyModel)
 model.fit()
