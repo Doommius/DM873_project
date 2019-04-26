@@ -60,7 +60,7 @@ class MyModel(models.Model):
 
 
 dataframe = pd.read_csv("dataset/butterflies.txt", sep='\t')
-dataframe['file'] = "dataset/base_set/" + dataframe['file'].astype(str)
+
 print(dataframe)
 model = MyModel
 model.call(model, dataframe[dataframe.family == 3])
