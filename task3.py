@@ -1,21 +1,9 @@
 from keras import preprocessing as pr
-from PIL import Image
-from keras import optimizers
-from keras.optimizers import SGD
-import tensorflow as tf
 import pandas as pd
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras import optimizers
-
-
-#
-#
-#  Idea 1,
-#  Parse the CSV file with all the information add the pictures to a array or data structure and fetch them from there?
-#
-#
 from pandas import DataFrame
 
 
@@ -43,7 +31,6 @@ df.loc[df['family'].isin([3]), 'family'] = "Nymphalidae"
 df.loc[df['family'].isin([4]), 'family'] = "Lycaenidae"
 df.loc[df['family'].isin([5]), 'family'] = "Hesperiidae"
 
-df = df.loc[df['family'].isin(["Pieridae", "Papilionidae"])]
 print(df)
 
 
@@ -60,7 +47,7 @@ model.add(Flatten())
 model.add(Dense(64))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
-model.add(Dense(2))
+model.add(Dense(5))
 model.add(Activation('sigmoid'))
 
 model.compile(loss='binary_crossentropy',
@@ -93,4 +80,4 @@ model.fit_generator(
     validation_data=validation_generator,
     nb_val_samples=50)
 
-model.save_weights("task1.h5")
+model.save_weights("task3.h5")
