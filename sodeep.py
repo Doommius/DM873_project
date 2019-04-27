@@ -2,8 +2,16 @@ from keras import models
 from keras import layers
 from keras import preprocessing as pr
 from keras import optimizers
+from keras.optimizers import SGD
 import tensorflow as tf
 import pandas as pd
+
+from keras import applications
+from keras.preprocessing.image import ImageDataGenerator
+from keras import optimizers
+from keras.models import Sequential
+from keras.layers import Dropout, Flatten, Dense
+
 
 #
 #
@@ -32,6 +40,13 @@ class MyModel(models.Model):
         self.dense3 = layers.Dense(10, actication='softmax')
 
     def call(self, dataframe):
+
+
+        model.compile(loss='binary_crossentropy',
+                      optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
+                      metrics=['accuracy'])
+
+
         train_dataframe = pd.DataFrame.sample(dataframe, frac=0.8)
         validation_dataframe = pd.DataFrame.drop(dataframe, train_dataframe.index)
 
@@ -48,11 +63,11 @@ class MyModel(models.Model):
         validation_generator = test_datagen.flow_from_dataframe(validation_dataframe,x_col='filename', y_col="family")
 
         model.fit_generator(
-            train_datagen,
-            steps_per_epoch=2000,
-            epochs=50,
+            train_generator,
+            samples_per_epoch=50,
+            epochs=5,
             validation_data=validation_generator,
-            validation_steps=800)
+            nb_val_samples=50)
 
         x = self.dense1(input)
         x = self.dense2(x)
@@ -74,6 +89,15 @@ df = dataframe.drop(columns=['species', 'genus','subfamily'])
 df = df.loc[df['family'].isin([1, 2])]
 print(df)
 
-model = MyModel
+model = applications.VGG16(weights='imagenet', include_top=False)
+
+top_model = Sequential()
+top_model.add(Flatten(input_shape=model.output_shape[1:]))
+top_model.add(Dense(256, activation='relu'))
+top_model.add(Dropout(0.5))
+top_model.add(Dense(1, activation='sigmoid'))
+
+
+
 model.call(model, df[df.family == 3])
 model.fit()
