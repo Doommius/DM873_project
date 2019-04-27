@@ -2,6 +2,7 @@ from keras import models
 from keras import layers
 from keras import preprocessing as pr
 from keras import optimizers
+import tensorflow as tf
 import pandas as pd
 
 #
@@ -42,9 +43,9 @@ class MyModel(models.Model):
 
         test_datagen = pr.image.ImageDataGenerator(rescale=1. / 255)
 
-        train_generator = train_datagen.flow_from_dataframe(train_dataframe)
+        train_generator = train_datagen.flow_from_dataframe(train_dataframe,x_col='filename', y_col="family")
 
-        validation_generator = test_datagen.flow_from_dataframe(validation_dataframe)
+        validation_generator = test_datagen.flow_from_dataframe(validation_dataframe,x_col='filename', y_col="family")
 
         model.fit_generator(
             train_generator,
@@ -59,9 +60,20 @@ class MyModel(models.Model):
         return x
 
 
+
+#config
+#   pd.set_option('display.max_rows', 50)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 1000)
+
+
 dataframe = pd.read_csv("dataset/butterflies.txt", sep='\t')
 
-print(dataframe)
+
+df = dataframe.drop(columns=['species', 'genus','subfamily'])
+df = df.loc[df['family'].isin([1, 2])]
+print(df)
+
 model = MyModel
-model.call(model, dataframe[dataframe.family == 3])
+model.call(model, df[df.family == 3])
 model.fit()
