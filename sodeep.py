@@ -48,7 +48,7 @@ class MyModel(models.Model):
         validation_generator = test_datagen.flow_from_dataframe(validation_dataframe,x_col='filename', y_col="family")
 
         model.fit_generator(
-            train_generator,
+            train_datagen,
             steps_per_epoch=2000,
             epochs=50,
             validation_data=validation_generator,
