@@ -31,8 +31,6 @@ def get_genus(dataframe, genus):
     return dataframe(['genus' == 3])
 
 
-# config
-#   pd.set_option('display.max_rows', 50)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
 
@@ -50,9 +48,20 @@ print(df)
 
 
 model = Sequential()
-model.add(Conv2D(64, (3, 3),
-                 input_shape=(32, 32, 3), padding='same',))
-
+model.add(Conv2D(64, (3, 3), activation="relu", input_shape=(32, 32, 3), padding='same'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Conv2D(32, 3, 3))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Conv2D(64, 3, 3))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Flatten())
+model.add(Dense(64))
+model.add(Activation('relu'))
+model.add(Dropout(0.5))
+model.add(Dense(2))
+model.add(Activation('sigmoid'))
 
 model.compile(loss='binary_crossentropy',
               optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
@@ -80,6 +89,6 @@ validation_generator = test_datagen.flow_from_dataframe(validation_dataframe, di
 model.fit_generator(
     train_generator,
     samples_per_epoch=50,
-    epochs=150,
+    epochs=10,
     validation_data=validation_generator,
     nb_val_samples=50)
