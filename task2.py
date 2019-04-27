@@ -39,9 +39,10 @@ df.loc[df['family'].isin([3]), 'family'] = "Nymphalidae"
 df.loc[df['family'].isin([4]), 'family'] = "Lycaenidae"
 df.loc[df['family'].isin([5]), 'family'] = "Hesperiidae"
 
-df = df.loc[df['family'].isin(["Nymphalidae", "Lycaenidae"])]
+df1 = df.loc[df['family'].isin(["Nymphalidae"])].sample(n=250)
+df2 = df.loc[df['family'].isin(["Lycaenidae"])].sample(n=250)
+df = df1.append(df2)
 print(df)
-
 
 model = Sequential()
 model.add(Conv2D(64, (3, 3), activation="relu", input_shape=(32, 32, 3), padding='same'))
