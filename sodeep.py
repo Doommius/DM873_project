@@ -1,16 +1,13 @@
-from keras import models
-from keras import layers
 from keras import preprocessing as pr
+from PIL import Image
 from keras import optimizers
 from keras.optimizers import SGD
 import tensorflow as tf
 import pandas as pd
-
-from keras import applications
-from keras.preprocessing.image import ImageDataGenerator
-from keras import optimizers
 from keras.models import Sequential
-from keras.layers import Dropout, Flatten, Dense
+from keras.layers import Dense, Dropout, Activation, Flatten
+from keras.layers import Conv2D, MaxPooling2D
+from keras import optimizers
 
 
 #
@@ -22,24 +19,16 @@ from keras.layers import Dropout, Flatten, Dense
 from pandas import DataFrame
 
 
-def get_subfamily(datagrame, subfamily):
+def get_subfamily(dataframe, subfamily):
     return dataframe(['subfamily' == 3])
 
 
-def get_species(datagrame, species):
+def get_species(dataframe, species):
     return dataframe(['species' == 3])
 
 
-def get_genus(datagrame, genus):
+def get_genus(dataframe, genus):
     return dataframe(['genus' == 3])
-
-
-class MyModel(models.Model):
-    def __init__(self):
-        super(MyModel, self).__init__()
-        self.dense1 = layers.Dense(20, actication='relu')
-        self.dense2 = layers.Dense(20, actication='relu')
-        self.dense3 = layers.Dense(10, actication='softmax')
 
 
 # config
@@ -59,7 +48,10 @@ df.loc[df['family'].isin([5]), 'family'] = "Hesperiidae"
 df = df.loc[df['family'].isin(["Pieridae", "Papilionidae"])]
 print(df)
 
-model = applications.VGG16(weights='imagenet', include_top=False)
+
+model = Sequential()
+model.add(Conv2D(64, (3, 3),
+                 input_shape=(32, 32, 3), padding='same',))
 
 model.compile(loss='binary_crossentropy',
               optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
@@ -78,17 +70,15 @@ test_datagen = pr.image.ImageDataGenerator(rescale=1. / 255)
 
 train_generator = train_datagen.flow_from_dataframe(train_dataframe, directory="dataset/base_set", x_col='filename',
                                                     y_col="family", class_mode="categorical", target_size=(32, 32),
-                                                    batch_size=32)
+                                                    batch_size=10)
 
 validation_generator = test_datagen.flow_from_dataframe(validation_dataframe, directory="dataset/base_set",
                                                         x_col='filename', y_col="family", class_mode="categorical",
-                                                        target_size=(32, 32), batch_size=32)
+                                                        target_size=(32, 32), batch_size=10)
 
 model.fit_generator(
     train_generator,
     samples_per_epoch=50,
-    epochs=5,
+    epochs=150,
     validation_data=validation_generator,
     nb_val_samples=50)
-
-model.fit()
