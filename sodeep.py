@@ -53,6 +53,7 @@ model = Sequential()
 model.add(Conv2D(64, (3, 3),
                  input_shape=(32, 32, 3), padding='same',))
 
+
 model.compile(loss='binary_crossentropy',
               optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
               metrics=['accuracy'])
