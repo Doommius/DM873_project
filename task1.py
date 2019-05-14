@@ -68,15 +68,15 @@ test_datagen = pr.image.ImageDataGenerator(rescale=1. / 255)
 
 train_generator = train_datagen.flow_from_dataframe(train_dataframe, directory="dataset/base_set", x_col='filename',
                                                     y_col="family", class_mode="categorical", target_size=(224, 224),
-                                                    batch_size=12)
+                                                    batch_size=8)
 
 validation_generator = test_datagen.flow_from_dataframe(validation_dataframe, directory="dataset/base_set",
                                                         x_col='filename', y_col="family", class_mode="categorical",
-                                                        target_size=(224, 224), batch_size=12)
+                                                        target_size=(224, 224), batch_size=8)
 
 model.fit_generator(
     train_generator,
-    samples_per_epoch=30,
+    samples_per_epoch=60,
     epochs=10,
     validation_data=validation_generator,
     nb_val_samples=400)
