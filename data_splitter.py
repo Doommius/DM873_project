@@ -53,7 +53,7 @@ def sample_function(part, samples, n=None, frac=None):
         elif frac is not None:
             df_train = pd.DataFrame.sample(df, frac=frac)
         else:
-            df_train = pd.DataFrame.sample(df, frac=0.8)
+            df_train = pd.DataFrame.sample(df, frac=0.7)
 
         df_validate = pd.DataFrame.drop(df, df_train.index)
         os.mkdir(part + "/train/" + sample)
@@ -76,7 +76,7 @@ os.mkdir(task)
 # task 1
 part = task + "/a/"
 samples = ["Papilionidae", "Pieridae"]
-sample_function(part, samples, frac=0.8)
+sample_function(part, samples, frac=0.7)
 
 # task 2
 part = task + "/b/"
@@ -86,4 +86,4 @@ sample_function(part, samples, n=250)
 # task 3
 part = task + "/c/"
 samples = ["Papilionidae", "Pieridae", "Nymphalidae", "Lycaenidae", "Hesperiidae"]
-sample_function(part, samples, frac=0.8)
+sample_function(part, samples, frac=0.7)

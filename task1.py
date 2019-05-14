@@ -55,7 +55,7 @@ model.compile(loss='binary_crossentropy',
               optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
               metrics=['accuracy'])
 
-train_dataframe = pd.DataFrame.sample(df, frac=0.8)
+train_dataframe = pd.DataFrame.sample(df, frac=0.7)
 validation_dataframe = pd.DataFrame.drop(df, train_dataframe.index)
 
 train_datagen = pr.image.ImageDataGenerator(
@@ -68,16 +68,16 @@ test_datagen = pr.image.ImageDataGenerator(rescale=1. / 255)
 
 train_generator = train_datagen.flow_from_dataframe(train_dataframe, directory="dataset/base_set", x_col='filename',
                                                     y_col="family", class_mode="categorical", target_size=(224, 224),
-                                                    batch_size=10)
+                                                    batch_size=12)
 
 validation_generator = test_datagen.flow_from_dataframe(validation_dataframe, directory="dataset/base_set",
                                                         x_col='filename', y_col="family", class_mode="categorical",
-                                                        target_size=(224, 224), batch_size=10)
+                                                        target_size=(224, 224), batch_size=12)
 
 model.fit_generator(
     train_generator,
     samples_per_epoch=30,
-    epochs=20,
+    epochs=10,
     validation_data=validation_generator,
     nb_val_samples=400)
 
