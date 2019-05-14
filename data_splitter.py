@@ -79,11 +79,11 @@ samples = ["Papilionidae", "Pieridae"]
 sample_function(part, samples, frac=0.8)
 
 # task 2
-task = "task2/b/"
+part = task + "/b/"
 samples = ["Nymphalidae", "Lycaenidae"]
 sample_function(part, samples, n=250)
 
 # task 3
-task = "task3/c/"
+part = task + "/c/"
 samples = ["Papilionidae", "Pieridae", "Nymphalidae", "Lycaenidae", "Hesperiidae"]
 sample_function(part, samples, frac=0.8)
