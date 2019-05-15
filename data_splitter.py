@@ -25,6 +25,13 @@ pd.set_option('display.width', 1000)
 dataframe = pd.read_csv("dataset/butterflies.txt", sep='\t')
 # drop unused collums.
 df = dataframe.drop(columns=['species', 'genus', 'subfamily'])
+
+df.loc[df['family'].isin([1]), 'family'] = "Papilionidae"
+df.loc[df['family'].isin([2]), 'family'] = "Pieridae"
+df.loc[df['family'].isin([3]), 'family'] = "Nymphalidae"
+df.loc[df['family'].isin([4]), 'family'] = "Lycaenidae"
+df.loc[df['family'].isin([5]), 'family'] = "Hesperiidae"
+
 ## END debugging code.
 
 
@@ -40,22 +47,24 @@ Both can be left blank and it uses 80/20 for training / validation.
 '''
 
 
+
 def sample_function(part, samples, n=None, frac=None):
     os.mkdir(part)
     os.mkdir(part + "/train/")
     os.mkdir(part + "/validate/")
 
     for sample in samples:
+        df_tmp = df.loc[df['family'] == sample]
 
-        df.loc[df['family'].isin([2]), 'family'] = sample
+        print (df_tmp)
         if n is not None:
-            df_train = pd.DataFrame.sample(df, n=n)
+            df_train = pd.DataFrame.sample(df_tmp, n=n)
         elif frac is not None:
-            df_train = pd.DataFrame.sample(df, frac=frac)
+            df_train = pd.DataFrame.sample(df_tmp, frac=frac)
         else:
-            df_train = pd.DataFrame.sample(df, frac=0.7)
+            df_train = pd.DataFrame.sample(df_tmp, frac=0.7)
 
-        df_validate = pd.DataFrame.drop(df, df_train.index)
+        df_validate = pd.DataFrame.drop(df_tmp, df_train.index)
         os.mkdir(part + "/train/" + sample)
 
         os.mkdir(part + "/validate/" + sample)

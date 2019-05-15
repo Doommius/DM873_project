@@ -60,7 +60,7 @@ plot_model(model, to_file='shared_input_layer.png')
 
 
 model.compile(loss='binary_crossentropy',
-              optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
+              optimizer=optimizers.SGD(lr=1e-3, momentum=0.9),
               metrics=['accuracy'])
 
 model.fit_generator(
@@ -71,5 +71,5 @@ model.fit_generator(
     nb_val_samples=400)
 
 
-exit()
-model.save_weights("task1.h5")
+# exit()
+# model.save_weights("task1.h5")
