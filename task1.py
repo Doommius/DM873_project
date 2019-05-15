@@ -23,7 +23,7 @@ pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
 
 dataframe = pd.read_csv("dataset/butterflies.txt", sep='\t')
-df: DataFrame = dataframe.drop(columns=['species', 'genus', 'subfamily'])
+df = dataframe.drop(columns=['species', 'genus', 'subfamily'])
 
 df.loc[df['family'].isin([1]), 'family'] = "Papilionidae"
 df.loc[df['family'].isin([2]), 'family'] = "Pieridae"
