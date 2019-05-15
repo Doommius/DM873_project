@@ -51,7 +51,7 @@ merge = concatenate([flat1, flat2])
 # interpretation layer
 hidden1 = Dense(10, activation='relu')(merge)
 # prediction output
-output = Dense(1, activation='sigmoid')(hidden1)
+output = Dense(1, activation='softmax')(hidden1)
 model = Model(inputs=visible, outputs=output)
 # summarize layers
 print(model.summary())
