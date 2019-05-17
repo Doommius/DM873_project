@@ -11,7 +11,20 @@ import pandas as pd
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
 
+'''
+BEGIN CONFIG!
+'''
+samples = ["Nymphalidae", "Lycaenidae"]
+IMG_SIZE = 224
+EPOCHS = 3
+BATCH_SIZE = 32
+# 1/scale
+scale = 32
+learning_rate = 1e-3
 
+'''
+END CONFIG!
+'''
 ##
 
 # Plot the training and validation loss + accuracy
@@ -45,18 +58,14 @@ df.loc[df['family'].isin([3]), 'family'] = "Nymphalidae"
 df.loc[df['family'].isin([4]), 'family'] = "Lycaenidae"
 df.loc[df['family'].isin([5]), 'family'] = "Hesperiidae"
 
-samples = ["Nymphalidae", "Lycaenidae"]
-IMG_SIZE = 224
-BATCH_SIZE = 32
-# 1/scale
-scale = 32
+
 
 num_classes = len(samples)
-df = df.loc[df['family'].isin(samples)]
-print(df)
+df1 = df.loc[df['family'].isin(["Nymphalidae"])].sample(n=250)
+df2 = df.loc[df['family'].isin(["Lycaenidae"])].sample(n=250)
 
 ##from data frame to data generator
-train_dataframe = pd.DataFrame.sample(df, frac=0.7)
+train_dataframe = df1.append(df2)
 validation_dataframe = pd.DataFrame.drop(df, train_dataframe.index)
 
 train_datagen = pr.image.ImageDataGenerator(
@@ -82,9 +91,6 @@ validation_generator = test_datagen.flow_from_dataframe(validation_dataframe, di
 from keras.models import load_model
 model = load_model('task1_mark.h5')
 
-print(model.summary())
-
-plot_model(model, to_file='network.png')
 
 es = EarlyStopping(
     monitor='val_loss',
@@ -99,19 +105,25 @@ mc = ModelCheckpoint(
     verbose=1,
     save_best_only=True)
 
+##how to freeze layers.
+for layer in model.layers[:20]:
+    layer.trainable=False
+for layer in model.layers[20:]:
+    layer.trainable=True
 
+print(model.summary())
 
-model.compile(loss='categorical_crossentropy',
-              optimizer=optimizers.SGD(lr=1e-3, momentum=0.9),
-              metrics=['accuracy'])
+plot_model(model, to_file='network.png')
+
+exit()
 
 history = model.fit_generator(
     train_generator,
     steps_per_epoch=len(train_generator),
-    epochs=3,
+    epochs=EPOCHS,
     validation_data=validation_generator,
     validation_steps=2,
-callbacks=[es, mc])
+    callbacks=[es, mc])
 
 plot_training(history)
 

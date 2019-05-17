@@ -5,6 +5,7 @@ from keras.layers import *
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras import optimizers
 from pandas import DataFrame
+import matplotlib.pyplot as plt
 import pandas as pd
 
 ##printing option for PD
@@ -120,7 +121,7 @@ model = Model(inputs=input, outputs=output)
 
 print(model.summary())
 
-plot_model(model, to_file='network.png')
+plot_model(model, to_file='task_2_a_network_mark.png')
 
 es = EarlyStopping(
     monitor='val_loss',
@@ -129,7 +130,7 @@ es = EarlyStopping(
     patience=3)
 
 mc = ModelCheckpoint(
-    "mark_1.h5",
+    "task_2_a_mark_checkpoint.h5",
     monitor='val_loss',
     mode='min',
     verbose=1,
@@ -149,6 +150,6 @@ history = model.fit_generator(
     validation_steps=2,
 callbacks=[es, mc])
 
-plot_training(history)
+model.save_weights("task_2_a_mark.h5")
 
-model.save_weights("task1_mark.h5")
+plot_training(history)
