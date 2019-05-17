@@ -32,7 +32,7 @@ df.loc[df['family'].isin([3]), 'family'] = "Nymphalidae"
 df.loc[df['family'].isin([4]), 'family'] = "Lycaenidae"
 df.loc[df['family'].isin([5]), 'family'] = "Hesperiidae"
 
-## END debugging code.
+## END debugging code.model.add(Dense(64).Activation('relu'))
 
 
 '''
