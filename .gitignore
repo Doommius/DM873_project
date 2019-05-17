@@ -1,0 +1,9 @@
+#Ignore venv folder
+venv/
+
+#Ignore vsCode folders
+.vscode/
+.idea/
+
+#Ignore training data folder
+task1/
