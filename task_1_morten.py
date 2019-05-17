@@ -80,7 +80,7 @@ es = EarlyStopping(
     patience=3)
 
 mc = ModelCheckpoint(
-    "task_1.h5",
+    "task_1_morten.h5",
     monitor='val_loss',
     mode='min',
     verbose=1,
@@ -96,5 +96,3 @@ model.fit_generator(
         validation_data=validation_generator,
         nb_val_samples=10,
         callbacks=[es, mc])
-
-# model.save_weights("task_1_morten.h5")
