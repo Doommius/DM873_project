@@ -1,6 +1,7 @@
 from keras import preprocessing as pr
 import pandas as pd
 from keras.utils import plot_model
+from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
@@ -9,6 +10,26 @@ from pandas import DataFrame
 import os
 import tensorflow as tf
 
+
+import matplotlib.pyplot as plt
+def plot_training(history):
+    acc = history.history['acc']
+    val_acc = history.history['val_acc']
+    loss = history.history['loss']
+    val_loss = history.history['val_loss']
+    epochs = range(len(acc))
+
+    plt.plot(epochs, acc, 'r.')
+    plt.plot(epochs, val_acc, 'r')
+    plt.title('Training and validation accuracy')
+
+    # plt.figure()
+    # plt.plot(epochs, loss, 'r.')
+    # plt.plot(epochs, val_loss, 'r-')
+    # plt.title('Training and validation loss')
+    plt.show()
+
+    plt.savefig('acc_vs_epochs.png')
 
 
 IMG_SIZE = 224
@@ -92,10 +113,12 @@ mc = ModelCheckpoint(
 model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
 
 
-model.fit_generator(
+history = model.fit_generator(
         train_generator,
         steps_per_epoch=60,
         epochs=15,
         validation_data=validation_generator,
         nb_val_samples=10,
         callbacks=[es, mc])
+
+plot_training(history)

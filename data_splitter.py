@@ -46,7 +46,6 @@ Both can be left blank and it uses 80/20 for training / validation.
 
 '''
 
-
 def sample_function(part, samples, n=None, frac=None):
     os.mkdir(part)
     os.mkdir(part + "/train/")

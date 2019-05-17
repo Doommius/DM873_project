@@ -5,6 +5,7 @@ from keras.layers import *
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras import optimizers
 from pandas import DataFrame
+from keras.models import load_model
 import pandas as pd
 
 ##printing option for PD
@@ -88,8 +89,8 @@ validation_generator = test_datagen.flow_from_dataframe(validation_dataframe, di
                                                         x_col='filename', y_col="family", class_mode="categorical",
                                                         target_size=(IMG_SIZE, IMG_SIZE), batch_size=BATCH_SIZE)
 # input layer
-from keras.models import load_model
-model = load_model('task1_mark.h5')
+
+model = load_model('task_2_a_mark_checkpoint.h5')
 
 
 es = EarlyStopping(
@@ -106,24 +107,29 @@ mc = ModelCheckpoint(
     save_best_only=True)
 
 ##how to freeze layers.
-for layer in model.layers[:20]:
+
+
+
+
+for layer in model.layers[:12]:
     layer.trainable=False
-for layer in model.layers[20:]:
+for layer in model.layers[12:]:
     layer.trainable=True
+
+model.compile(loss='categorical_crossentropy',
+              optimizer='rmsprop',
+              metrics=['accuracy'])
 
 print(model.summary())
 
 plot_model(model, to_file='network.png')
-
-exit()
 
 history = model.fit_generator(
     train_generator,
     steps_per_epoch=len(train_generator),
     epochs=EPOCHS,
     validation_data=validation_generator,
-    validation_steps=2,
-    callbacks=[es, mc])
+    validation_steps=2)
 
 plot_training(history)
 
