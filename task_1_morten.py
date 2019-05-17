@@ -53,7 +53,8 @@ model.add(MaxPooling2D(
         pool_size=(2,2),
         strides=2))
     
-model.add(Dropout(0.2))
+model.add(Dropout(
+        rate=0.2))
 
 model.add(Conv2D(filters=64,
                kernel_size=(2,2),
@@ -61,30 +62,32 @@ model.add(Conv2D(filters=64,
                padding='valid'))
 
 model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2,2),
-                     strides=2))
+model.add(MaxPooling2D(
+                    pool_size=(2,2),
+                    strides=2))
 
 model.add(Flatten())        
 model.add(Dense(64))
 model.add(Activation('relu'))
 
-model.add(Dropout(0.2))
+model.add(Dropout(
+        rate=0.2))
 
 model.add(Dense(1))
 model.add(Activation('sigmoid'))
 
 es = EarlyStopping(
-    monitor='val_loss',
-    mode='min',
-    verbose=1,
-    patience=3)
+        monitor='val_loss',
+        mode='min',
+        verbose=1,
+        patience=3)
 
 mc = ModelCheckpoint(
-    "task_1_morten.h5",
-    monitor='val_loss',
-    mode='min',
-    verbose=1,
-    save_best_only=True)
+        "task_1_morten.h5",
+        monitor='val_loss',
+        mode='min',
+        verbose=1,
+        save_best_only=True)
 
 model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
 
