@@ -1,10 +1,9 @@
 from keras import preprocessing as pr
-import pandas as pd
 from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation, Flatten
-from keras.layers import Conv2D, MaxPooling2D
+from keras.layers import Dense, Dropout, Activation, Flatten,Conv2D, MaxPooling2D
 from keras import optimizers
 from pandas import DataFrame
+import pandas as pd
 
 ##printing option for PD
 pd.set_option('display.max_columns', 500)
@@ -46,8 +45,6 @@ train_generator = train_datagen.flow_from_dataframe(train_dataframe, directory  
 validation_generator = test_datagen.flow_from_dataframe(validation_dataframe, directory="dataset/base_set",
                                                         x_col='filename', y_col="family", class_mode="categorical",
                                                         target_size=(224, 224), batch_size=64)
-
-
 
 ##Network begin.
 model = Sequential()

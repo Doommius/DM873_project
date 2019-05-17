@@ -1,37 +1,16 @@
 from keras import preprocessing as pr
 import pandas as pd
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation, Flatten
-from keras.layers import Conv2D, MaxPooling2D
-from keras import optimizers
-
-
-#
-#
-#  Idea 1,
-#  Parse the CSV file with all the information add the pictures to a array or data structure and fetch them from there?
-#
-#
 from pandas import DataFrame
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Activation, Flatten,Conv2D, MaxPooling2D
 
-
-def get_subfamily(dataframe, subfamily):
-    return dataframe(['subfamily' == 3])
-
-
-def get_species(dataframe, species):
-    return dataframe(['species' == 3])
-
-
-def get_genus(dataframe, genus):
-    return dataframe(['genus' == 3])
-
+from keras import optimizers
 
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
 
 dataframe = pd.read_csv("dataset/butterflies.txt", sep='\t')
-df: DataFrame = dataframe.drop(columns=['species', 'genus', 'subfamily'])
+df = dataframe.drop(columns=['species', 'genus', 'subfamily'])
 
 df.loc[df['family'].isin([1]), 'family'] = "Papilionidae"
 df.loc[df['family'].isin([2]), 'family'] = "Pieridae"
@@ -43,6 +22,26 @@ df1 = df.loc[df['family'].isin(["Nymphalidae"])].sample(n=250)
 df2 = df.loc[df['family'].isin(["Lycaenidae"])].sample(n=250)
 df = df1.append(df2)
 print(df)
+
+train_dataframe = pd.DataFrame.sample(df, frac=0.8)
+validation_dataframe = pd.DataFrame.drop(df, train_dataframe.index)
+
+train_datagen = pr.image.ImageDataGenerator(
+    rescale=1. / 255,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True)
+
+test_datagen = pr.image.ImageDataGenerator(rescale=1. / 255)
+
+train_generator = train_datagen.flow_from_dataframe(train_dataframe, directory="dataset/base_set", x_col='filename',
+                                                    y_col="family", class_mode="categorical", target_size=(32, 32),
+                                                    batch_size=10)
+
+validation_generator = test_datagen.flow_from_dataframe(validation_dataframe, directory="dataset/base_set",
+                                                        x_col='filename', y_col="family", class_mode="categorical",
+                                                        target_size=(32, 32), batch_size=10)
+
 
 model = Sequential()
 model.add(Conv2D(64, (3, 3), activation="relu", input_shape=(32, 32, 3), padding='same'))
@@ -64,24 +63,12 @@ model.compile(loss='binary_crossentropy',
               optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
               metrics=['accuracy'])
 
-train_dataframe = pd.DataFrame.sample(df, frac=0.8)
-validation_dataframe = pd.DataFrame.drop(df, train_dataframe.index)
 
-train_datagen = pr.image.ImageDataGenerator(
-    rescale=1. / 255,
-    shear_range=0.2,
-    zoom_range=0.2,
-    horizontal_flip=True)
-
-test_datagen = pr.image.ImageDataGenerator(rescale=1. / 255)
-
-train_generator = train_datagen.flow_from_dataframe(train_dataframe, directory="dataset/base_set", x_col='filename',
-                                                    y_col="family", class_mode="categorical", target_size=(32, 32),
-                                                    batch_size=10)
-
-validation_generator = test_datagen.flow_from_dataframe(validation_dataframe, directory="dataset/base_set",
-                                                        x_col='filename', y_col="family", class_mode="categorical",
-                                                        target_size=(32, 32), batch_size=10)
+##how to freeze layers.
+for layer in model.layers[:20]:
+    layer.trainable=False
+for layer in model.layers[20:]:
+    layer.trainable=True
 
 model.fit_generator(
     train_generator,
