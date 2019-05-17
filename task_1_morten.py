@@ -1,5 +1,6 @@
 from keras import preprocessing as pr
 import pandas as pd
+from keras.utils import plot_model
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
@@ -72,6 +73,8 @@ model.add(Dropout(0.2))
 model.add(Dense(1))
 model.add(Activation('sigmoid'))
 
+plot_model(model, to_file='morten_network.png')
+
 model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
 
 
@@ -82,4 +85,4 @@ model.fit_generator(
         validation_data=validation_generator,
         nb_val_samples=10)
 
-model.save_weights("task_1_morten.h5")
+# model.save_weights("task_1_morten.h5")
