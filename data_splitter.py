@@ -47,11 +47,11 @@ Both can be left blank and it uses 80/20 for training / validation.
 '''
 
 
-
 def sample_function(part, samples, n=None, frac=None):
     os.mkdir(part)
     os.mkdir(part + "/train/")
     os.mkdir(part + "/validate/")
+    os.mkdir(part + "/test/")
 
     for sample in samples:
         df_tmp = df.loc[df['family'] == sample]
@@ -64,10 +64,16 @@ def sample_function(part, samples, n=None, frac=None):
         else:
             df_train = pd.DataFrame.sample(df_tmp, frac=0.7)
 
-        df_validate = pd.DataFrame.drop(df_tmp, df_train.index)
+        df_tmp = pd.DataFrame.drop(df_tmp, df_train.index)
+
+        df_test = pd.DataFrame.sample(df_tmp, frac=0.7)
+
+        df_validate = pd.DataFrame.drop(df_tmp, df_test.index)
         os.mkdir(part + "/train/" + sample)
 
         os.mkdir(part + "/validate/" + sample)
+
+        os.mkdir(part + "/test/" + sample)
 
         for row in df_train.itertuples():
             shutil.copyfile("dataset/base_set/" + row[1], part + "train/" + sample + "/" + (row[1].replace("/", "_")))
@@ -75,6 +81,10 @@ def sample_function(part, samples, n=None, frac=None):
         for row in df_validate.itertuples():
             shutil.copyfile("dataset/base_set/" + row[1],
                             part + "validate/" + sample + "/" + (row[1].replace("/", "_")))
+
+        for row in df_test.itertuples():
+            shutil.copyfile("dataset/base_set/" + row[1],
+                            part + "test/" + sample + "/" + (row[1].replace("/", "_")))
 
 
 task = "task1"

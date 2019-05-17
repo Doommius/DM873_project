@@ -45,7 +45,7 @@ df.loc[df['family'].isin([3]), 'family'] = "Nymphalidae"
 df.loc[df['family'].isin([4]), 'family'] = "Lycaenidae"
 df.loc[df['family'].isin([5]), 'family'] = "Hesperiidae"
 
-samples = ["Pieridae", "Papilionidae"]
+samples = ["Nymphalidae", "Lycaenidae"]
 IMG_SIZE = 224
 BATCH_SIZE = 32
 # 1/scale
@@ -79,44 +79,8 @@ validation_generator = test_datagen.flow_from_dataframe(validation_dataframe, di
                                                         x_col='filename', y_col="family", class_mode="categorical",
                                                         target_size=(IMG_SIZE, IMG_SIZE), batch_size=BATCH_SIZE)
 # input layer
-input = Input(shape=(IMG_SIZE, IMG_SIZE, 3))
-
-
-x = Conv2D(filters=16,
-           kernel_size=(3, 3),
-           strides=(1, 1),
-           padding='valid',
-           input_shape=(IMG_SIZE, IMG_SIZE, 3),
-           data_format='channels_last',
-           activation='sigmoid')(input)
-x = MaxPooling2D(pool_size=(2, 2),
-                 strides=2)(x)
-x = Dropout(rate=0.2)(x)
-
-y = Conv2D(filters=64,
-           kernel_size=(3, 3),
-           strides=(1, 1),
-           padding='valid',
-           activation='relu')(input)
-y = MaxPooling2D(pool_size=(2, 2))(y)
-y = Dropout(rate=0.2)(y)
-
-
-x = concatenate([x, y])
-x = MaxPooling2D(pool_size=(2, 2),
-                 strides=2)(x)
-x = Conv2D(filters=64, kernel_size=(8, 8), activation='relu')(x)
-x = MaxPooling2D(pool_size=(2, 2),
-                 strides=2)(x)
-
-
-x = Dense(64, activation='relu')(x)
-x = Dropout(rate=0.2)(x)
-
-
-x = Flatten()(x)
-output = Dense(num_classes, activation='softmax')(x)
-model = Model(inputs=input, outputs=output)
+from keras.models import load_model
+model = load_model('task1_mark.h5')
 
 print(model.summary())
 
@@ -129,7 +93,7 @@ es = EarlyStopping(
     patience=3)
 
 mc = ModelCheckpoint(
-    "mark_1.h5",
+    "task_2_b_mark_checkpoint.h5",
     monitor='val_loss',
     mode='min',
     verbose=1,
@@ -151,4 +115,4 @@ callbacks=[es, mc])
 
 plot_training(history)
 
-model.save_weights("task1_mark.h5")
+model.save_weights("task_2_b_mark.h5")

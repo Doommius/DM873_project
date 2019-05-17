@@ -1,6 +1,6 @@
 from keras import preprocessing as pr
 import pandas as pd
-from keras.callbacks import EarlyStopping, ModelCheckpoint
+from keras.utils import plot_model
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
