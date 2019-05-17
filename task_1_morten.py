@@ -1,5 +1,6 @@
 from keras import preprocessing as pr
 import pandas as pd
+from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
@@ -72,6 +73,19 @@ model.add(Dropout(0.2))
 model.add(Dense(1))
 model.add(Activation('sigmoid'))
 
+es = EarlyStopping(
+    monitor='val_loss',
+    mode='min',
+    verbose=1,
+    patience=3)
+
+mc = ModelCheckpoint(
+    "task_1.h5",
+    monitor='val_loss',
+    mode='min',
+    verbose=1,
+    save_best_only=True)
+
 model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
 
 
@@ -80,6 +94,7 @@ model.fit_generator(
         steps_per_epoch=60,
         epochs=15,
         validation_data=validation_generator,
-        nb_val_samples=10)
+        nb_val_samples=10,
+        callbacks=[es, mc])
 
-model.save_weights("task_1_morten.h5")
+# model.save_weights("task_1_morten.h5")
