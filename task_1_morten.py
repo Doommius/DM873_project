@@ -73,7 +73,18 @@ model.add(Dropout(0.2))
 model.add(Dense(1))
 model.add(Activation('sigmoid'))
 
-plot_model(model, to_file='morten_network.png')
+es = EarlyStopping(
+    monitor='val_loss',
+    mode='min',
+    verbose=1,
+    patience=3)
+
+mc = ModelCheckpoint(
+    "task_1.h5",
+    monitor='val_loss',
+    mode='min',
+    verbose=1,
+    save_best_only=True)
 
 model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
 
@@ -83,6 +94,7 @@ model.fit_generator(
         steps_per_epoch=60,
         epochs=15,
         validation_data=validation_generator,
-        nb_val_samples=10)
+        nb_val_samples=10,
+        callbacks=[es, mc])
 
-# model.save_weights("task_1_morten.h5")
+model.save_weights("task_1_morten.h5")
