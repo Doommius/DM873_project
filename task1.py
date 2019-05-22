@@ -81,4 +81,4 @@ model.fit_generator(
     validation_data=validation_generator,
     nb_val_samples=400)
 
-# model.save_weights("task1.h5")
+# model.save("task1.h5")
