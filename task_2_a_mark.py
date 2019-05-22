@@ -150,6 +150,6 @@ history = model.fit_generator(
     validation_steps=2,
 callbacks=[es, mc])
 
-model.save_weights("task_2_a_mark.h5")
+model.save("task_2_a_mark.h5")
 
 plot_training(history)
