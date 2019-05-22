@@ -133,4 +133,4 @@ history = model.fit_generator(
 
 plot_training(history)
 
-model.save_weights("task_2_b_mark.h5")
+model.save("task_2_b_mark.h5")
