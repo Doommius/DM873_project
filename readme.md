@@ -1,4 +1,4 @@
-# MD
+# DM873 Deep learning
 
 ## Made by
 
@@ -11,6 +11,11 @@
    Pandas
    Tensorflow
 
+##About
+
+This is the mandatory assigments for the course DM873 Deep learning at SDU in Odense, Denmark. the course page is at https://imada.sdu.dk/Employees/roettger/teaching/2019_spring_dm873.php
+
+There are 2 types of files here, the datasplitter that seperates the datafiles into folder required per assignment 1, and files that pick files from the csv and train the network based on those files.
 
 
 ## Git
